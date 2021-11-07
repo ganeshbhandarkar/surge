@@ -1,0 +1,30 @@
+{
+  "name": "surge",
+  "version": "1.0.0",
+  "description": "Final year project",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ganeshbhandarkar/surge.git"
+  },
+  "keywords": [
+    "conference",
+    "app",
+    "webapp",
+    "node",
+    "app"
+  ],
+  "author": "Ganesh Bhandarkar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ganeshbhandarkar/surge/issues"
+  },
+  "homepage": "https://github.com/ganeshbhandarkar/surge#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^4.3.1"
+  }
+}
