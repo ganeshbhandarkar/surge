@@ -1,3 +1,6 @@
+
+/* action-page */
+
 body{
     font-family: robot,lato !important;
     font-size: large;
@@ -44,4 +47,86 @@ textarea:focus ,input:focus{
 }
 .jumbotron{
     background: white;
+    
+}
+
+
+/* index-page */
+
+.home-wrap{
+    background-color: rgb(30, 30, 30);
+}
+.g-top{
+    height: 90vh;
+    position: relative;
+}
+
+.video-wrap{
+    height: 600px;
+}
+
+.video-wrap{
+    flex : 1 1 250px;
+    border: 1px solid white;
+}
+
+.g-top-left{
+    justify-content: space-between;
+    position: absolute;
+    right: 0;
+    height: 5vh;
+    top: 0;
+    border-radius: 10px;
+}
+
+.top-left-participant-wrap{
+    position: relative;
+}
+
+.cursor-pointer{
+    cursor: pointer;
+    padding: 5px;
+}
+
+.cursor-pointer:hover{
+    cursor: pointer;
+    padding: 5px;
+    background-color: rgb(226, 225, 225);
+    border-radius: 5px;
+}
+
+.top-left-participant-count{
+    position: absolute;
+    top: -2px;
+    right: -3px;
+    font-size: 15px;
+}
+
+.g-bottom{
+    /* margin: 0 -10px !important; */
+    padding: 0 20px;
+    box-shadow: 0 0 5px black;
+    z-index: 2;
+}
+
+.bottom-left{
+    position: relative;
+    padding: 5px;
+}
+
+.action-icon-style{
+    font-size: 8px !important;
+    height: 40px;
+    width: 40px;
+    border: 1px solid black;
+    border-radius: 50px;
+}
+
+.action-icon-style span.material-icons{
+    font-size: 20px;
+}
+
+.end-call-wrap{
+    -ms-transform: rotate(135deg);
+    transform: rotate(135deg);
 }
