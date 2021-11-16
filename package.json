@@ -25,6 +25,7 @@
   "homepage": "https://github.com/ganeshbhandarkar/surge#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "lsof": "^0.1.0",
     "socket.io": "^4.3.1"
   }
 }

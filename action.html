@@ -30,11 +30,11 @@
                     <a href="#" class="nav-link">Log In</a>
                 </li>
                 <li class="nav-item">
-                    <button class="btn btn-outline-secondary btn-lg text-info font-weight-bold">Join Class</button>
+                    <button class="btn btn-outline-secondary btn-lg text-info font-weight-bold join-meeting">Join Class</button>
                 </li>
 
                 <li class="nav-item">
-                    <button class="btn btn-info btn-lg text-light font-weight-bold">Create Class</button>
+                    <button class="btn btn-info btn-lg text-light font-weight-bold new-meeting">Create Class</button>
                 </li>
             </ul>
         </div>
@@ -49,7 +49,7 @@
                 <ul class="display-center justify-content-start">
                     
                     <li>
-                        <button class="btn btn-lg  text-light font-weight-bold display-center" style="background-color: #01796b;">
+                        <button class="btn btn-lg  text-light font-weight-bold display-center new-meeting" style="background-color: #01796b;">
                             <span class="material-icons mr-2">video_call</span>
                             New Class
                         </button>
@@ -57,10 +57,10 @@
                     <li class="pl-2">
                         <button class="btn btn-lg btn-outline-secondary text-dark font-weight-bold display-center" style="background-color: #ffffff;">
                             <span class="material-icons mr-2">keyboard</span>
-                            <input type="text" placeholder="Enter a code" style="border: none;">
+                            <input type="text" placeholder="Enter a code" style="border: none;" class="enter-code">
                         </button>
                     </li>
-                    <li class="text-dark pl-4 font-weight-bold cursor-pointer">Get In</li>
+                    <li class="text-dark pl-4 font-weight-bold cursor-pointer join-action">Get In</li>
                 </ul>
             </div>
             
@@ -72,5 +72,26 @@
     <footer class="container">
         <h6>Learn More About <span class="learn-more text-info">Surge</span></h6>
     </footer>
+    <script src="http://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function(){
+            $(document).on("click",".join-meeting",function(){
+                $(".enter-code").focus();
+            })
+            $(document).on("click",".join-action",function(){
+                var join_value = $('.enter-code').val();
+                var meetingUrl = window.location.origin+"?meetingID="+join_value;
+                window.location.replace(meetingUrl);
+            })
+            $(document).on("click",".new-meeting",function(){
+                // var join_value = $('.enter-code').val();
+                var eight_d_value = Math.floor(Math.random()*100000000);
+
+                var meetingUrl = window.location.origin+"?meetingID="+eight_d_value;
+
+                window.location.replace(meetingUrl);
+            })
+        })
+    </script>
 </body>
 </html>
