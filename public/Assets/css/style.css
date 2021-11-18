@@ -62,7 +62,7 @@ textarea:focus ,input:focus{
 }
 
 .video-wrap{
-    height: 600px;
+    height: 900px;
 }
 
 .video-wrap{
@@ -100,6 +100,17 @@ textarea:focus ,input:focus{
     top: -2px;
     right: -3px;
     font-size: 15px;
+}
+
+.top-remote-video-show-wrap{
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+video{
+    border: 1px solid grey;
+    width: 300px;
 }
 
 .g-bottom{

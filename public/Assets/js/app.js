@@ -1,8 +1,5 @@
 // const { Socket } = require("socket.io");
 
-const e = require("cors");
-
-
 //the app process is helping function to make it more easy to use with other methods so to use 
 //the function in other function we have to use below syntax which returns the function and can be used
 
@@ -23,11 +20,13 @@ var AppProcess = (function(){
         Camera: 1,
         ScreenShare: 2
     }
-    var video_st = videostates.None;
-    async function _init(SDP_function, my_connId){
+    var video_st = video_states.None;
+    var videoCamTrack;
+    var rtp_vid_senders = []
+    async function _init(SDP_function, my_connid){
         
         serverProcess = SDP_function;
-        my_connection_id = my_connId;
+        my_connection_id = my_connid;
         eventProcess();
         local_div = document.getElementById("localVideoPlayer");
 
@@ -70,6 +69,62 @@ var AppProcess = (function(){
                 await videoProcess(video_states.ScreenShare)
             }
         })
+
+    }
+
+    function connection_status(connection){
+        if(connection && (connection.connectionState == "new" || connection.connectionState == "connecting" || connection.connectionState == "connected")){
+            alert("hey connected");
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    async function updateMediaSenders(track,rtp_senders){
+        for(var con_id in peers_connection_ids){
+            if(connection_status(peers_connection[con_id])){
+                if(rtp_senders[con_id] && rtp_senders[con_id].track){
+                    rtp_senders[con_id].replaceTrack(track);
+                }else{
+                    rtp_senders[con_id] = peers_connection[con_id].addTrack(track);
+                }
+            }
+        }
+    }
+    async function videoProcess(newVideoState){
+        try{
+            var vstream = null;
+            if(newVideoState == video_states.Camera){
+                vstream = await navigator.mediaDevices.getUserMedia({
+                    video:{
+                        width:1920,
+                        height:1080
+                    },
+                    audio:false
+                })
+            }else if(newVideoState == video_states.ScreenShare){
+                vstream = await navigator.mediaDevices.getDisplayMedia({
+                    video:{
+                        width:1920,
+                        height:1080
+                    },
+                    audio:false
+                })
+            }
+            if(vstream && vstream.getVideoTracks().length > 0){
+                videoCamTrack = vstream.getVideoTracks()[0];
+                if(videoCamTrack){
+                    local_div.srcObject = new MediaStream([videoCamTrack]);
+                    updateMediaSenders(videoCamTrack,rtp_vid_senders);
+                    //alert("video cam found");
+                }
+            }
+        }catch(e){
+            console.log(e);
+            return;
+        }
+        video_st = newVideoState;
 
     }
 
@@ -132,6 +187,13 @@ var AppProcess = (function(){
         peers_connection_ids[connid] = connid;
         peers_connection[connid] = connection;
 
+        
+        if(video_st == video_states.Camera || video_st == video_states.ScreenShare){
+            if(videoCamTrack){
+                updateMediaSenders(videoCamTrack,rtp_vid_senders);
+            }
+        }
+
         return connection;
         }
 
@@ -177,8 +239,8 @@ var AppProcess = (function(){
         setNewConnection: async function(connid){
             await setConnection(connid);
         },
-        init: async function(SDP_function, my_connId){
-            await _init(SDP_function, my_connId);
+        init: async function(SDP_function, my_connid){
+            await _init(SDP_function, my_connid);
         },
         processClientFunc: async function(data, from_connid){
             await SDPProcess(data, from_connid);
@@ -196,6 +258,9 @@ var MyApp = (function(){
         //alert("From app js");
         user_id = uid;
         meeting_id = mid;
+        $("#meetingContainer").show();
+        $("#me h2").text(user_id + "(ME)");
+        document.title = user_id;
         event_process_for_signaling_server();
     }
 
@@ -224,7 +289,6 @@ var MyApp = (function(){
         });
 
         // other users my sent info
-
         socket.on("inform_others_about_me", function(data){
             addUser(data.other_user_id, data.connId);
             AppProcess.setNewConnection(data.connId);
@@ -246,7 +310,7 @@ var MyApp = (function(){
     }
 
     function addUser(other_user_id, connId){
-        var newDivId = $("otherTemplate").clone();
+        var newDivId = $("#otherTemplate").clone();
         newDivId = newDivId.attr("id", connId).addClass("other");
         newDivId.find("h2").text(other_user_id);
         newDivId.find("video").text("id","v_"+connId);

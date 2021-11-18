@@ -24,15 +24,17 @@ io.on("connection",(socket)=>{
         userConnections.push({
             connectionId : socket.id,
             user_id: data.displayName,
-            meeting_id:data.meetingid
+            meeting_id: data.meetingid
         });
 
         other_users.forEach((v)=> {
             socket.to(v.connectionId).emit("inform_others_about_me",{
                 other_user_id:data.displayName,
-                connId:socket.id
+                connId: socket.id
             })
         })
+
+        socket.emit("inform_me_about_other_user", other_users);
 
     });
 
